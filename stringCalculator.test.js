@@ -44,3 +44,8 @@ test("numbers greater than 1000 should be ignored", () => {
 test("support multi-character custom delimiter", () => {
   expect(add("//[***]\n1***2***3")).toBe(6);
 });
+
+test("support multiple custom delimiters", () => {
+  expect(add("//[*][%]\n1*2%3")).toBe(6);
+  expect(add("//[***][%%]\n4***5%%6")).toBe(15);
+});
