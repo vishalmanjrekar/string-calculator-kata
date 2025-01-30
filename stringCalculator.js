@@ -7,14 +7,21 @@ function add(numbers) {
     let customDelimiter = parts[0].slice(2);
 
     if (customDelimiter.startsWith("[")) {
-      customDelimiter = customDelimiter.slice(1, -1);
-      customDelimiter = customDelimiter.replace(
-        /[-\/\\^$*+?.()|[\]{}]/g,
-        "\\$&"
+      // ✅ Extract multiple delimiters from format "//[delim1][delim2]\n"
+      const delimiters = customDelimiter
+        .match(/\[([^\]]+)\]/g)
+        .map((d) => d.slice(1, -1));
+      delimiter = new RegExp(
+        delimiters
+          .map((d) => d.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&"))
+          .join("|")
+      ); // Escape and join delimiters
+    } else {
+      delimiter = new RegExp(
+        customDelimiter.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")
       );
     }
 
-    delimiter = new RegExp(customDelimiter);
     numbers = parts[1];
   }
 
