@@ -4,7 +4,17 @@ function add(numbers) {
   let delimiter = /,|\n/;
   if (numbers.startsWith("//")) {
     const parts = numbers.split("\n");
-    delimiter = new RegExp(parts[0].slice(2));
+    let customDelimiter = parts[0].slice(2);
+
+    if (customDelimiter.startsWith("[")) {
+      customDelimiter = customDelimiter.slice(1, -1);
+      customDelimiter = customDelimiter.replace(
+        /[-\/\\^$*+?.()|[\]{}]/g,
+        "\\$&"
+      );
+    }
+
+    delimiter = new RegExp(customDelimiter);
     numbers = parts[1];
   }
 
